@@ -28,7 +28,7 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
-    @GetMapping("menus")
+    @GetMapping("menu")
     public ResponseEntity<?> showAll() {
         List<Menu> getList = menuService.listAlll();
         if (getList == null) {

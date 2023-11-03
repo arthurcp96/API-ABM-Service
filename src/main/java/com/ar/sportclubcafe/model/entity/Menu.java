@@ -22,10 +22,12 @@ import lombok.ToString;
 
 public class Menu implements Serializable {
     @Id
-    @Column(nullable=false, name="id_cliente")
+    @Column(name="id_cliente")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idMenu;
+    @Column(nullable = false)
     private Double precio;
+    @Column(nullable = false, unique = true)
     private String nombre;
     private Date fechaRegistro;
 
