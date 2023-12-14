@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ar.sportclubcafe.exception.ResourceNotFoundException;
 import com.ar.sportclubcafe.model.dto.MenuDto;
 import com.ar.sportclubcafe.model.entity.Menu;
 import com.ar.sportclubcafe.model.payload.MensajeResponse;
@@ -31,13 +32,8 @@ public class MenuController {
     @GetMapping("menu")
     public ResponseEntity<?> showAll() {
         List<Menu> getList = menuService.listAlll();
-        if (getList == null) {
-            return new ResponseEntity<>(
-                    MensajeResponse.builder()
-                            .mensaje("No hay registros")
-                            .object(null)
-                            .build()
-                    , HttpStatus.OK);
+        if (getList == null || getList.isEmpty()) {
+            throw new ResourceNotFoundException("clientes");
         }
 
         return new ResponseEntity<>(
@@ -78,12 +74,8 @@ public class MenuController {
     public ResponseEntity<?> showById(@PathVariable Integer id)  {
         Menu menu = menuService.findById(id);
         if(menu == null){
-            return new ResponseEntity<>(
-                MensajeResponse.builder()
-                         .mensaje("El Registro que intenta buscar, no existe!")
-                         .object(null)
-                         .build()
-                    , HttpStatus.NOT_FOUND);
+            
+            throw new ResourceNotFoundException("cliente", "id", id);
         }
         
         return new ResponseEntity<>(
