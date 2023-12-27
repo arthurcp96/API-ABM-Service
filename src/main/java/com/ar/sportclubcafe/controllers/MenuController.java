@@ -16,11 +16,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ar.sportclubcafe.exception.BadRequestException;
 import com.ar.sportclubcafe.exception.ResourceNotFoundException;
 import com.ar.sportclubcafe.model.dto.MenuDto;
 import com.ar.sportclubcafe.model.entity.Menu;
 import com.ar.sportclubcafe.model.payload.MensajeResponse;
 import com.ar.sportclubcafe.service.MenuService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -46,7 +49,7 @@ public class MenuController {
 
 
     @PostMapping("menu")
-    public ResponseEntity<?> create (@RequestBody MenuDto menuDto){
+    public ResponseEntity<?> create (@RequestBody @Valid MenuDto menuDto){
         Menu menuSave = null;
         try {
             menuSave = menuService.save(menuDto);
@@ -61,12 +64,7 @@ public class MenuController {
                     .build()
                     , HttpStatus.CREATED);
         } catch (DataAccessException exDt) {
-            return new ResponseEntity<>(
-                    MensajeResponse.builder()
-                            .mensaje(exDt.getMessage())
-                            .object(null)
-                            .build()
-                    , HttpStatus.METHOD_NOT_ALLOWED);
+            throw new BadRequestException(exDt.getMessage());
         }
     }
 
@@ -100,12 +98,7 @@ public class MenuController {
             menuService.delete(menuDelete);
             return new ResponseEntity<>(menuDelete, HttpStatus.NO_CONTENT);
         } catch (DataAccessException exDt) {
-            return new ResponseEntity<>(
-                    MensajeResponse.builder()
-                            .mensaje(exDt.getMessage())
-                            .object(null)
-                            .build()
-                    , HttpStatus.METHOD_NOT_ALLOWED);
+            throw new BadRequestException(exDt.getMessage());
         }
     }
 
@@ -127,20 +120,10 @@ public class MenuController {
                         .build()
                         , HttpStatus.CREATED);
             } else {
-                return new ResponseEntity<>(
-                        MensajeResponse.builder()
-                                .mensaje("El registro que intenta actualizar no se encuentra en la base de datos.")
-                                .object(null)
-                                .build()
-                        , HttpStatus.NOT_FOUND);
+                throw new ResourceNotFoundException("menu","id",id);
             }
         } catch (DataAccessException exDt) {
-            return new ResponseEntity<>(
-                    MensajeResponse.builder()
-                            .mensaje(exDt.getMessage())
-                            .object(null)
-                            .build()
-                    , HttpStatus.METHOD_NOT_ALLOWED);
+            throw new BadRequestException(exDt.getMessage());
         }
     }
 
