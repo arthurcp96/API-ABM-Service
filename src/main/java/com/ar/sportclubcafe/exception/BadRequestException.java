@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class BadRequestException extends RuntimeException{
 
     public BadRequestException(String mensaje) {
-        super(mensaje);
+        super(String.format("No se puede eliminar objeto inexistente",mensaje));
     }
     
 }

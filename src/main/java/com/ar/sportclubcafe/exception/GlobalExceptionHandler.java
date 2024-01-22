@@ -28,10 +28,11 @@ public class GlobalExceptionHandler {
 
         ApiResponse apiResponse = new ApiResponse(mapErrors.toString(), webRequest.getDescription(false));
 
-        return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
     }
     
     @ExceptionHandler(ResourceNotFoundException.class)
+    
     public ResponseEntity<ApiResponse> handlerResourceNotFoundException(ResourceNotFoundException exception, WebRequest webRequest ) {
 
         ApiResponse apiResponse = new ApiResponse(exception.getMessage(), webRequest.getDescription(false));
