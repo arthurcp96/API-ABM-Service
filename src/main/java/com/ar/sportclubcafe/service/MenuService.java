@@ -6,20 +6,20 @@ import java.util.List;
 
 
 import com.ar.sportclubcafe.model.dto.MenuDto;
-import com.ar.sportclubcafe.model.entity.Menu;
+
 
 
 public interface MenuService {
     
-    List<Menu> listAlll();
+    List<MenuDto> findAll();
 
-    Menu save(MenuDto menu);
+    MenuDto save(MenuDto menuDto);
 
-    Menu findById(Integer id);
+    MenuDto findById(Integer id);
 
-    void delete(Menu menu);
+    MenuDto delete(Integer id);
 
+    MenuDto update(Integer id, MenuDto menuDto);
+    
     boolean existsById(Integer id);
-    
-    
 }

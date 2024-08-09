@@ -2,9 +2,6 @@ package com.ar.sportclubcafe.controllers;
 
 
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,11 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ar.sportclubcafe.exception.BadRequestException;
-import com.ar.sportclubcafe.exception.ResourceNotFoundException;
+
 import com.ar.sportclubcafe.model.dto.MenuDto;
-import com.ar.sportclubcafe.model.entity.Menu;
-import com.ar.sportclubcafe.model.payload.MensajeResponse;
+
+
 import com.ar.sportclubcafe.service.MenuService;
 
 import jakarta.validation.Valid;
@@ -31,8 +27,41 @@ import jakarta.validation.Valid;
 @CrossOrigin(origins = "http://localhost:4200")
 public class MenuController {
 
-    @Autowired
-    private MenuService menuService;
+    private final MenuService menuService;
+
+    public MenuController(MenuService menuService) {
+        this.menuService = menuService;
+    }
+    
+    @GetMapping("/menu")
+    public ResponseEntity<List<MenuDto>> get(){
+        return new ResponseEntity<>(menuService.findAll(), HttpStatus.OK);
+    }
+
+    @PostMapping("/menu")
+    public ResponseEntity<MenuDto> save(@RequestBody @Valid MenuDto menuDto){
+        return new ResponseEntity<>(menuService.save(menuDto),HttpStatus.CREATED);
+    }
+
+    @PutMapping("/menu/{id}")
+    public ResponseEntity<MenuDto> update (@PathVariable Integer id, @RequestBody @Valid MenuDto menuDto){
+        return new ResponseEntity<>(menuService.update(id, menuDto), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/menu/{id}")
+    public ResponseEntity<MenuDto> delete(@PathVariable Integer id){
+        return new ResponseEntity<>(menuService.delete(id), HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/menu/{id}")
+    public ResponseEntity<?> getMenu(@PathVariable Integer id){
+        MenuDto menuDto = menuService.findById(id);
+        return ResponseEntity.ok(menuDto);
+    }
+
+
+    
+    /*private MenuService menuService;
 
     @GetMapping("menu")
     public ResponseEntity<?> showAll() {
@@ -127,6 +156,6 @@ public class MenuController {
         } catch (DataAccessException exDt) {
             throw new BadRequestException(exDt.getMessage());
         }
-    }
+    }*/
 
 }
