@@ -1,18 +1,27 @@
 
-# 1. Usamos java 17
-FROM eclipse-temurin:17-jre-alpine
-
-# 2. Creamos un directorio de trabajo dentro del contenedor
+# --- ETAPA 1: Construcción (Build) ---
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
 
-# 3. Copiamos el archivo .jar generado en el paso 1 al contenedor
-# NOTA: Ajusta la ruta si usas Gradle (ej: build/libs/*.jar)
-COPY target/*.jar app.jar
+# Copiamos primero el pom.xml y descargamos las dependencias
+# (Esto optimiza el caché de Docker y hace que los futuros despliegues sean más rápidos)
+COPY pom.xml .
+RUN mvn dependency:go-offline
 
-# 4. Exponemos el puerto 8080 (donde corre Spring Boot por defecto)
+# Copiamos el código fuente y compilamos el proyecto
+COPY src ./src
+# Usamos -DskipTests para que no corra los tests y el despliegue sea más rápido
+# RUN mvn clean package -DskipTests
+
+# --- ETAPA 2: Ejecución (Run) ---
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+
+# Exponemos el puerto
 EXPOSE 8080
 
-# 5. Comando para iniciar la aplicación
-# IMPORTANTE: Los flags -Xmx y -Xms limitan la RAM para que no te expulsen del plan gratuito.
-# Aquí limitamos a ~350MB, dejando espacio para el sistema operativo del contenedor (total < 512MB).
+# Copiamos ÚNICAMENTE el .jar generado en la Etapa 1 a esta nueva imagen limpia
+COPY --from=build /app/target/*.jar app.jar
+
+# Ejecutamos la aplicación con los límites de memoria para el plan gratuito
 ENTRYPOINT ["java", "-Xmx350m", "-Xms350m", "-jar", "app.jar"]
