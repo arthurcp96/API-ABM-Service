@@ -23,7 +23,7 @@ public class MenuDto implements Serializable {
     private String nombre;
     private Date fechaRegistro;
 
-/*     // Explicit getters and setters for JDK 25 compatibility
+     // Explicit getters and setters for JDK 25 compatibility
     public Integer getIdMenu() {
         return idMenu;
     }
@@ -54,5 +54,5 @@ public class MenuDto implements Serializable {
 
     public void setFechaRegistro(Date fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
-    } */
+    } 
 }
