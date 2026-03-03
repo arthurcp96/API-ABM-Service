@@ -11,7 +11,7 @@ RUN mvn dependency:go-offline
 # Copiamos el código fuente y compilamos el proyecto
 COPY src ./src
 # Usamos -DskipTests para que no corra los tests y el despliegue sea más rápido
-# RUN mvn clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 # --- ETAPA 2: Ejecución (Run) ---
 FROM eclipse-temurin:17-jre-alpine
