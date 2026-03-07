@@ -7,17 +7,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ar.sportclubcafe.model.dto.MenuDto;
 
-
+import com.ar.sportclubcafe.service.CloudinaryService;
 import com.ar.sportclubcafe.service.MenuService;
 
 import jakarta.validation.Valid;
@@ -29,8 +30,11 @@ public class MenuController {
 
     private final MenuService menuService;
 
+    
+
     public MenuController(MenuService menuService) {
         this.menuService = menuService;
+        
     }
     
     @GetMapping("/menu")
@@ -39,13 +43,13 @@ public class MenuController {
     }
 
     @PostMapping("/menu")
-    public ResponseEntity<MenuDto> save(@RequestBody @Valid MenuDto menuDto){
-        return new ResponseEntity<>(menuService.save(menuDto),HttpStatus.CREATED);
+    public ResponseEntity<MenuDto> save(@ModelAttribute @Valid MenuDto menuDto, MultipartFile imagen)throws Exception {
+        return new ResponseEntity<>(menuService.save(menuDto, imagen),HttpStatus.CREATED);
     }
 
     @PutMapping("/menu/{id}")
-    public ResponseEntity<MenuDto> update (@PathVariable Integer id, @RequestBody @Valid MenuDto menuDto){
-        return new ResponseEntity<>(menuService.update(id, menuDto), HttpStatus.OK);
+    public ResponseEntity<MenuDto> update (@PathVariable Integer id, @ModelAttribute @Valid MenuDto menuDto, MultipartFile imagen)throws Exception {
+        return new ResponseEntity<>(menuService.update(id, menuDto, imagen), HttpStatus.OK);
     }
 
     @DeleteMapping("/menu/{id}")

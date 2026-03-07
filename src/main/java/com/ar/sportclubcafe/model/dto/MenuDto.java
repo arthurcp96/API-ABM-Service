@@ -22,6 +22,7 @@ public class MenuDto implements Serializable {
     @NotEmpty(message="Nombre requerido!")
     private String nombre;
     private Date fechaRegistro;
+    private String imagenUrl;
 
      // Explicit getters and setters for JDK 25 compatibility
     public Integer getIdMenu() {
@@ -46,6 +47,13 @@ public class MenuDto implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+    public String getImagenUrl() {
+        return imagenUrl;
+    }
+
+    public void setImagenUrl(String imagenUrl) {
+        this.imagenUrl = imagenUrl;
     }
 
     public Date getFechaRegistro() {
