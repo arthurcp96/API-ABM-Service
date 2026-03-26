@@ -42,17 +42,17 @@ public class MenuController {
         return new ResponseEntity<>(menuService.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/menu")
+    @PostMapping("/menu/admin/item")
     public ResponseEntity<MenuDto> save(@ModelAttribute @Valid MenuDto menuDto, MultipartFile imagen)throws Exception {
         return new ResponseEntity<>(menuService.save(menuDto, imagen),HttpStatus.CREATED);
     }
 
-    @PutMapping("/menu/{id}")
+    @PutMapping("/menu/admin/item/{id}")
     public ResponseEntity<MenuDto> update (@PathVariable Integer id, @ModelAttribute @Valid MenuDto menuDto, MultipartFile imagen)throws Exception {
         return new ResponseEntity<>(menuService.update(id, menuDto, imagen), HttpStatus.OK);
     }
 
-    @DeleteMapping("/menu/{id}")
+    @DeleteMapping("/menu/admin/item/{id}")
     public ResponseEntity<MenuDto> delete(@PathVariable Integer id){
         return new ResponseEntity<>(menuService.delete(id), HttpStatus.NO_CONTENT);
     }
