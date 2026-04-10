@@ -11,6 +11,10 @@ Es un proyecto de alta, baja y modificación, de una tabla sobre un menu, que pu
 
 Opción deploy en render: https://api-abm-service.onrender.com/swagger-ui/index.html#/
 
+## Variables locales (VS Code)
+
+Para ejecutar local con credenciales ocultas, usar `.vscode/launch.json` en `env`.
+
 ### Lenguajes y Herramientas:
 <p align="left">
   <a href="https://docs.oracle.com/en/java/" target="_blank" rel="noreferrer"> <img src="https://logolook.net/wp-content/uploads/2022/11/Java-Logo.png" alt="java" width="40" height="40"/></a>    

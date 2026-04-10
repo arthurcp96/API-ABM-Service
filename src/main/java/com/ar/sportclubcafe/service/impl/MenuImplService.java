@@ -58,7 +58,7 @@ public class MenuImplService implements MenuService {
         Menu menu = menuMapper.toMenu(menuDto, urlImagen);
         menu.setFechaRegistro(new Date());
 
-        if (menuRepository.existsById(menuDto.getIdMenu())) {
+        if (menuDto.getIdMenu() != null && menuRepository.existsById(menuDto.getIdMenu())) {
             throw new UnsupportedOperationException("Id existente");
         }
 
